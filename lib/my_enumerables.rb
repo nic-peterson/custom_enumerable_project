@@ -23,6 +23,49 @@ module Enumerable
     end
     return true
   end
+
+  def my_any?
+    self.my_each do |element|
+      bool = yield(element)
+      return true if bool == true
+    end
+    return false
+  end
+
+  def my_none?
+    self.my_each do |element|
+      bool = yield(element)
+      return false if bool == true
+    end
+    return true
+  end
+
+  def my_count
+    count = 0
+    if block_given?
+      self.my_each do |element|
+        count += 1 if yield(element)
+      end
+      count
+    else
+      self.size
+    end
+  end
+
+  def my_map
+    result = []
+    self.my_each do |element|
+      result << yield(element)
+    end
+    result
+  end
+
+  def my_inject(initial_value, &block)
+    self.my_each do |element|
+      initial_value = block.call(initial_value, element)
+    end
+    initial_value
+  end
 end
 
 # You will first have to define my_each
